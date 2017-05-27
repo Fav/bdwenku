@@ -26,7 +26,8 @@
         removeBrother(content);
         //点击全屏按钮
         document.getElementsByClassName('top-right-fullScreen')[0].click();
-        //window.print();
+        //去掉浮动导航栏
+        document.getElementsByClassName('fix-searchbar-wrap')[0].remove();
     };
 
     function removeBrother(elm) {
