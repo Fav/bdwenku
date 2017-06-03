@@ -2,7 +2,7 @@
 // @name         百度文库界面清理
 // @namespace    http://tampermonkey.net/
 // @version      0.1
-// @description  百度文库界面清理
+// @description  清除百度文库界面上多余节点，给你一个清爽的阅读环境
 // @author       You
 // @match        http://wenku.baidu.com/*
 // @match        https://wenku.baidu.com/*
