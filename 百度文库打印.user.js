@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         打印
+// @name         百度文库打印
 // @namespace    http://tampermonkey.net/
 // @require      http://code.jquery.com/jquery-3.3.1.min.js
 // @require      https://cdn.bootcss.com/jQuery.print/1.6.0/jQuery.print.min.js
