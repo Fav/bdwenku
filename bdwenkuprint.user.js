@@ -9,19 +9,22 @@
 // @match        http://wenku.baidu.com/*
 // @match        https://wenku.baidu.com/*
 // @grant        none
+// @note         1.点击 prepare print 按钮之后，除文档内容之外的其余元素会移除，
+// @note         2.用户需要手动将滚动条从上往下缓慢拖动，保证每一个单页都加载完成(bd使用ajax动态生成的页面)，文档下会新建一个id为myprint的div来保存已加载的页面
+// @note         3.点击print按钮弹出打印对话框，用户最好自己调整一下页面边距，缩放，使打印效果达到最好，此时打印的是"myprint" div
+// @note         4.点击取消，然后右键打印，可以打印当前网页，此时打印的是document
+// @note         现在还不是很好用，持续改进
 // ==/UserScript==
 
 $(document).ready(function(){
     'use strict';
     var content = document.getElementById('reader-container-inner-1');
 
-    var para = document.createElement("div");
-    para.innerHTML = '<div style="position:fixed;left:10px;top:80px;border:solid 2px red;padding:10px;z-index:999;" id="ddd">print</div>';
+    let para = document.createElement("div");
+    para.innerHTML = '<div style="position:fixed;left:10px;top:80px;border:solid 2px red;padding:10px;z-index:999;" id="ddd">prepare print</div>';
     document.body.appendChild(para);
 
-    document.getElementById("hideOrg").onclick = function() {
-        $('#reader-container-inner-1>').hide();
-    }
+
     document.getElementById("ddd").onclick = function() {
         //删除兄弟节点,删除父节点的兄弟节点
         removeBrother(content);
@@ -29,6 +32,13 @@ $(document).ready(function(){
         //document.getElementsByClassName('top-right-fullScreen')[0].click();
         //去掉浮动导航栏
         document.getElementsByClassName('fix-searchbar-wrap')[0].remove();
+
+        //显示所有页
+        $('.moreBtn').click();
+
+        remove('wk-other-new-cntent');
+
+        $('reader-container-inner-1').scrollTop();
 
         createPrintDom();
         let page = getPageCount();
@@ -45,12 +55,24 @@ $(document).ready(function(){
                     if(target[0]==undefined || target[0] == null){
                         //创建节点，并填内容
                         $('#myprint').append($('#reader-container-inner-1>.'+pageClsName).prop("outerHTML"));
+                    }else{
+                        //更新内容
+                        target.html($('#reader-container-inner-1>.'+pageClsName+'>.inner>.bd').html());
                     }
                 }
-                $("div").scrollTop(pageHight*i);
+                //$("div").scrollTop(pageHight*i);
             }
         }
-        $('#ddd').after( '<div style="position:fixed;left:10px;top:120px;border:solid 2px red;padding:10px;z-index:999;" id="hideOrg">hide</div>')
+
+        let para = document.createElement("div");
+        para.innerHTML =  '<div style="position:fixed;left:10px;top:120px;border:solid 2px red;padding:10px;z-index:999;" id="hideOrg">print</div>';
+        document.body.appendChild(para);
+
+        document.getElementById("hideOrg").onclick = function() {
+            $('#reader-container-inner-1>').hide();
+            $('#myprint').print();
+        }
+
         //doCopy();
         //$('#myprint').print();
         //$("#reader-container-inner-1").scroll(doCopy);
@@ -77,6 +99,15 @@ $(document).ready(function(){
         $('#reader-container-inner-1').after('<div class="reader-container-inner" id="myprint"><div>');
     }
 
-
+    function remove(className){
+        var items = document.getElementsByClassName(className);
+        if(items != null && items.length >0){
+            var item = items[0];
+            if(item != null )
+            {
+                item.remove();
+            }
+        }
+    }
 
 });
