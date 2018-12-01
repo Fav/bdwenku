@@ -2,7 +2,7 @@
 // @name         百度文库打印
 // @namespace    http://cesium.xin/
 // @version      0.1.3
-// @description  go print
+// @description  打印时，文档被最大化(右上方最大按钮点击)，此时需要调整一下打印参数，更多>>边距>>自定义,调整一下上下左右距离，以达到最好的效果
 // @author       You
 // @match        http://wenku.baidu.com/*
 // @match        https://wenku.baidu.com/*
