@@ -1,14 +1,13 @@
 // ==UserScript==
 // @name         百度文库打印
-// @namespace    http://tampermonkey.net/
-// @require      http://code.jquery.com/jquery-3.3.1.min.js
-// @require      https://cdn.bootcss.com/jQuery.print/1.6.0/jQuery.print.min.js
-// @version      0.1
+// @namespace    http://cesium.xin/
+// @version      0.1.3
 // @description  go print
 // @author       You
 // @match        http://wenku.baidu.com/*
 // @match        https://wenku.baidu.com/*
 // @grant        none
+// @icon         https://www.baidu.com/cache/icon/favicon.ico
 // @note         1.点击 prepare print 按钮之后，除文档内容之外的其余元素会移除，
 // @note         2.打印时，文档被最大化(右上方最大按钮点击)，此时需要调整一下打印参数，更多>>边距>>自定义,调整一下上下左右距离，以达到最好的效果
 // @note         参考了 詹eko 百度文库（wenku）在线下载PDF格式文件 的部分代码https://greasyfork.org/zh-CN/scripts/373334-%E7%99%BE%E5%BA%A6%E6%96%87%E5%BA%93-wenku-%E5%9C%A8%E7%BA%BF%E4%B8%8B%E8%BD%BDpdf%E6%A0%BC%E5%BC%8F%E6%96%87%E4%BB%B6
