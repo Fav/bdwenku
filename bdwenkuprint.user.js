@@ -10,20 +10,17 @@
 // @match        https://wenku.baidu.com/*
 // @grant        none
 // @note         1.点击 prepare print 按钮之后，除文档内容之外的其余元素会移除，
-// @note         2.用户需要手动将滚动条从上往下缓慢拖动，保证每一个单页都加载完成(bd使用ajax动态生成的页面)，文档下会新建一个id为myprint的div来保存已加载的页面
-// @note         3.点击print按钮弹出打印对话框，用户最好自己调整一下页面边距，缩放，使打印效果达到最好，此时打印的是"myprint" div
-// @note         4.点击取消，然后右键打印，可以打印当前网页，此时打印的是document
-// @note         现在还不是很好用，持续改进
+// @note         2.打印时，文档被最大化(右上方最大按钮点击)，此时需要调整一下打印参数，更多>>边距>>自定义,调整一下上下左右距离，以达到最好的效果
+// @note         参考了 詹eko 百度文库（wenku）在线下载PDF格式文件 的部分代码https://greasyfork.org/zh-CN/scripts/373334-%E7%99%BE%E5%BA%A6%E6%96%87%E5%BA%93-wenku-%E5%9C%A8%E7%BA%BF%E4%B8%8B%E8%BD%BDpdf%E6%A0%BC%E5%BC%8F%E6%96%87%E4%BB%B6
 // ==/UserScript==
 
 $(document).ready(function(){
     'use strict';
     var content = document.getElementById('reader-container-inner-1');
 
-    let para = document.createElement("div");
-    para.innerHTML = '<div style="position:fixed;left:10px;top:80px;border:solid 2px red;padding:10px;z-index:999;" id="ddd">prepare print</div>';
+    var para = document.createElement("div");
+    para.innerHTML = '<div style="position:fixed;left:10px;top:80px;border:solid 2px red;padding:10px;z-index:999;" id="ddd">print</div>';
     document.body.appendChild(para);
-
 
     document.getElementById("ddd").onclick = function() {
         //删除兄弟节点,删除父节点的兄弟节点
@@ -32,50 +29,28 @@ $(document).ready(function(){
         //document.getElementsByClassName('top-right-fullScreen')[0].click();
         //去掉浮动导航栏
         document.getElementsByClassName('fix-searchbar-wrap')[0].remove();
+        document.getElementsByClassName('wk-other-new-cntent')[0].remove();
 
-        //显示所有页
-        $('.moreBtn').click();
+        $(".moreBtn").click();
 
-        remove('wk-other-new-cntent');
-
-        $('reader-container-inner-1').scrollTop();
-
-        createPrintDom();
-        let page = getPageCount();
-        let pageHight = 1343.66;
-
-        window.onscroll = function doCopy(){
-            for(let i = 1; i< page+1;i++){
-                let pageClsName = 'reader-page-'+i;
-                //页面内容是否为空
-                let contentPage = $('#reader-container-inner-1>.'+pageClsName+'>.inner>.bd').html();
-                if(contentPage != '' ){
-                    //查找目标地方是否为空
-                    let target = $('#myprint>.'+pageClsName+'>.inner>.bd')
-                    if(target[0]==undefined || target[0] == null){
-                        //创建节点，并填内容
-                        $('#myprint').append($('#reader-container-inner-1>.'+pageClsName).prop("outerHTML"));
-                    }else{
-                        //更新内容
-                        target.html($('#reader-container-inner-1>.'+pageClsName+'>.inner>.bd').html());
-                    }
-                }
-                //$("div").scrollTop(pageHight*i);
+        jQuery.fn.extend({remove: function(){return false;}});
+        let height = document.body.scrollHeight;
+        let htemp=0;
+        var time = window.setInterval(function(){
+            $(window).scrollTop(htemp);
+            htemp=htemp+700;
+            height = document.body.scrollHeight;
+            if (htemp>height) {
+                window.clearInterval(time);
+                window.setTimeout(function(){
+                    //修改下样式
+                    $(".top-right-fullScreen").click();
+                    $('.reader-page').css({border: 0});
+                    $('.reader-container').css({border: 0});
+                    window.print();
+                }, 3000)
             }
-        }
-
-        let para = document.createElement("div");
-        para.innerHTML =  '<div style="position:fixed;left:10px;top:120px;border:solid 2px red;padding:10px;z-index:999;" id="hideOrg">print</div>';
-        document.body.appendChild(para);
-
-        document.getElementById("hideOrg").onclick = function() {
-            $('#reader-container-inner-1>').hide();
-            $('#myprint').print();
-        }
-
-        //doCopy();
-        //$('#myprint').print();
-        //$("#reader-container-inner-1").scroll(doCopy);
+        }, 500);
     };
 
     function removeBrother(elm) {
@@ -90,24 +65,4 @@ $(document).ready(function(){
         }
         removeBrother(elm.parentNode);
     }
-
-    function getPageCount(){
-        return $('#reader-container-inner-1>.reader-page').length;
-    }
-
-    function createPrintDom(){
-        $('#reader-container-inner-1').after('<div class="reader-container-inner" id="myprint"><div>');
-    }
-
-    function remove(className){
-        var items = document.getElementsByClassName(className);
-        if(items != null && items.length >0){
-            var item = items[0];
-            if(item != null )
-            {
-                item.remove();
-            }
-        }
-    }
-
 });
