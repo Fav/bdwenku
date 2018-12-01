@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         百度文库打印
 // @namespace    http://cesium.xin/
-// @version      0.1.3
+// @version      0.1.4
 // @description  打印时，文档被最大化(右上方最大按钮点击)，此时需要调整一下打印参数，更多>>边距>>自定义,调整一下上下左右距离，以达到最好的效果
 // @author       You
 // require       http://fonts.googleapis.com/css?family=Open+Sans:300,400
@@ -28,7 +28,7 @@ $(document).ready(function(){
     let divEle = document.getElementById('hqdiv');
     if(!divEle){
         var para = document.createElement("div");
-        para.innerHTML = '<div style="position:fixed;left:10px;top:80px;width:50%;height:100px;z-index:999;border:red 1px solid;" id="hqdiv"></div>';
+        para.innerHTML = '<div style="position:fixed;left:10px;top:80px;width:50%;height:100px;z-index:999;" id="hqdiv"></div>';
         document.body.appendChild(para);
         $("#hqdiv").append('<ul id="hq-nav-bar" />');
     }
