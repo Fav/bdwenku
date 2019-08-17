@@ -1,8 +1,8 @@
 // ==UserScript==
 // @name         百度文库免费下载
 // @namespace    http://cesium.xin/
-// @version      0.1.2
-// @description  清除百度文库界面上多余节点，给你一个清爽的阅读环境
+// @version      0.0.1
+// @description  免费下载
 // @author       You
 // @icon         https://www.baidu.com/cache/icon/favicon.ico
 // @match        http://wenku.baidu.com/*
