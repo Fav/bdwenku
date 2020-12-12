@@ -5,6 +5,7 @@
 // @description  打印时，文档被最大化(右上方最大按钮点击)，此时需要调整一下打印参数，更多>>边距>>自定义,调整一下上下左右距离，以达到最好的效果，可以运行pdf转word 转换等功能的网站 https://smallpdf.com/
 // @author       You
 // require       http://fonts.googleapis.com/css?family=Open+Sans:300,400
+// @require      https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js
 // @match        http://wenku.baidu.com/*
 // @match        https://wenku.baidu.com/*
 // @grant        none
@@ -14,7 +15,7 @@
 // @note         2.打印时，文档被最大化(右上方最大按钮点击)，此时需要调整一下打印参数，更多>>边距>>自定义,调整一下上下左右距离，以达到最好的效果
 // @note         参考了 詹eko 百度文库（wenku）在线下载PDF格式文件 的部分代码https://greasyfork.org/zh-CN/scripts/373334-%E7%99%BE%E5%BA%A6%E6%96%87%E5%BA%93-wenku-%E5%9C%A8%E7%BA%BF%E4%B8%8B%E8%BD%BDpdf%E6%A0%BC%E5%BC%8F%E6%96%87%E4%BB%B6
 // ==/UserScript==
-
+var $ = window.jQuery;
 $(document).ready(function(){
     'use strict';
     $("head").append (
@@ -23,7 +24,7 @@ $(document).ready(function(){
         + 'rel="stylesheet" type="text/css">'
     );
 
-    var content = document.getElementById('reader-container-inner-1');
+    var content = $('.reader-wrap')[0];
 
     let divEle = document.getElementById('hqdiv');
     if(!divEle){
@@ -42,12 +43,12 @@ $(document).ready(function(){
         //点击全屏按钮
         //document.getElementsByClassName('top-right-fullScreen')[0].click();
         //去掉浮动导航栏
-        document.getElementsByClassName('fix-searchbar-wrap')[0].remove();
-        document.getElementsByClassName('wk-other-new-cntent')[0].remove();
+        document.getElementsByClassName('topbar-container')[0].remove();
+        //document.getElementsByClassName('wk-other-new-cntent')[0].remove();
 
-        $(".moreBtn").click();
+        $(".read-all").click();
 
-        jQuery.fn.extend({remove: function(){return false;}});
+        $.fn.extend({remove: function(){return false;}});
         let height = document.body.scrollHeight;
         let htemp=0;
         var time = window.setInterval(function(){
@@ -61,6 +62,8 @@ $(document).ready(function(){
                     $(".top-right-fullScreen").click();
                     $('.reader-page').css({border: 0});
                     $('.reader-container').css({border: 0});
+
+                    $(".try-end-fold-page")[0].remove();
                     window.print();
                 }, 3000)
             }
